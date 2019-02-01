@@ -88,12 +88,22 @@ lamhalf <- lam %>%
 
 lam_2 <- lam %>%
   group_by(blade_length) %>%
-  summarise(mean_bl = mean(blade_length)
-  
-  
+  summarise(mean_bl = mean(blade_length),
+  min_bl = min(blade_length),
+  max_bl = max(blade_length),
+  n = n())
 
+library(tidyverse)
   
+#exercise 1.3
   
-  
+lam %>%
+  group_by(site) %>% 
+  filter(stipe_mass == max(stipe_mass)) %>% 
+  select(site, region, stipe_length)
+#work in lam 
+#grouping by site
+#filter to take info from a specific column
+#select is to choose specific columns you work in
   
   

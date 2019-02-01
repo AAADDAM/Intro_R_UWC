@@ -110,9 +110,8 @@ plot_4
 plot_combined <- ggarrange(plot_1, plot_2, plot_3, plot_4)
 #ggarrange found in ggpubr
 
-#choose 3 datasets and create 2 graphs that are different for each
-#calculate the mean of one column in those datasets i.e 3 means
-#compose a hypothesis
+
+
 
 
 #3rd library
@@ -124,4 +123,12 @@ urine <- boot::urine
 
 urine %>% 
   select(-cond)
+
+ggplot(data = urine, aes(x = osmo, y = ph)) +
+  geom_point(aes(colour = cond))
+#difference in colour spectrum shows level of conductivity
+
+ggplot(data = urine, aes(x = osmo, y = ph)) +
+  geom_point(aes(colour = as.factor(r)))
+
 

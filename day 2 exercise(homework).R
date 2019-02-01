@@ -152,8 +152,10 @@ ggplot(lam_site, aes(x = stipe_length, y = stipe_mass, colour = site)) +#ggplot 
   ggtitle("length and mass of stipes in lamanaria species at Olifantsbos") +#ggtitle is used to create a heading for the graph
   theme_bw()#theme is used to create or assign a background to the graph
 
-
+library(ggpubr)
+library(tidyverse)  
+library(lubridate)  
   
-  
-  
-
+#c concatenate,making your own set of numbers
+#geom_plot for tidyverse
+#just bar is for base r
