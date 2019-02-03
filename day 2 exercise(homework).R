@@ -159,3 +159,9 @@ library(lubridate)
 #c concatenate,making your own set of numbers
 #geom_plot for tidyverse
 #just bar is for base r
+
+# [A.A]
+# Nicely done
+# Many other different analyses could be done on the tooth dataset that may show this better but you will learn this later in Biostats
+# Great use of comments
+# Nicely done

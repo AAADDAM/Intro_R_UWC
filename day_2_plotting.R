@@ -8,7 +8,7 @@
 library(tidyverse)
 
 chicks <- datasets::ChickWeight
-??ChickWeight
+??ChickWeight # What are you doing here? Add in comments [A.A]
 
 ggplot(data = chicks, aes(x = Time, y = weight)) + 
   geom_point() +
@@ -131,4 +131,5 @@ ggplot(data = urine, aes(x = osmo, y = ph)) +
 ggplot(data = urine, aes(x = osmo, y = ph)) +
   geom_point(aes(colour = as.factor(r)))
 
+#  Script runs, good use of comments and exploring different datasets[A.A]
 

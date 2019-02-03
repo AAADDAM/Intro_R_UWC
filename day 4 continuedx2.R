@@ -40,3 +40,7 @@ SACTN %>%
   group_by(site, src) %>% #grouped by site and source
   summarise(mean_temp = mean(temp, na.rm = TRUE), #summarise to get mean and stdv of temp
             sd_temp = sd(temp, na.rm = TRUE))
+
+# [A.A]
+# Neat script, script runs smoothly
+# More comments would help when studying

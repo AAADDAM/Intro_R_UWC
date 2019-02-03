@@ -48,6 +48,9 @@ sa_4 <- sa_3 +
                     ymin = -30, ymax = -24)
 sa_4
 
+# [A.A]
+# self made comments will only benifit you and increase your marks
+# Try new things and explore the different functions in R
 
 
 

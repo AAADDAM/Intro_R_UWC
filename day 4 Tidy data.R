@@ -40,5 +40,9 @@ SACTN4b_tidy <- SACTN4b %>%
 SACTN4_tidy <- left_join(SACTN4a_tidy, SACTN4b_tidy)#left join function detects similar words, R will group by site, soure and date
 
 
+# [A.A]
+# More comments could be added
+# EXplain more
+# Script runs complete
 
 

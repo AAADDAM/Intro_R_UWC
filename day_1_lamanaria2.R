@@ -6,18 +6,19 @@
 #tidyverse and lubridate
 
 library(tidyverse)
-lam <- library(readr)
+lam <- library(readr) # [A.A] what are you doing here?
 laminaria <- read_csv("data/laminaria.csv")
 View(laminaria)
 lam <- read_csv("data/laminaria.csv")
 
+# Here you should add comments describing what you are doing [A.A]
 head(lam)
 head(lam, n = 3)
 tail(lam, n = 3)
 
 lam_select <- lam %>% 
   select(site, total_length) %>% 
-  slice(54,88)
+  slice(54,88) # The slice function should read slice(54:88) [A.A]
 
 lam_kom <- lam %>%
   filter(site=="Kommetjie")
@@ -30,13 +31,13 @@ lam_kom <- lam %>%
 
 lam_Seapoint <- lam %>% 
   select(site, blade_length) %>%
-  filter(site == "Seapoint")
+  filter(site == "Seapoint") # Here are no values in this dataset because the site is spelled wrong, it should be Sea Point [A.A]
 
 lam %>% 
   filter(total_length == max(total_length))
 
 
-summary(lam)
+summary(lam) # Describe what each of the functions are [A.A]
 
 
 lam %>% 
@@ -63,8 +64,8 @@ lam_count <- lam %>%
 lam %>%
   select(stipe_mass) %>% 
   na.omit
-  summarise(n = n())
-  
+  summarise(n = n()) # This bit of code does not run, Simply because there is no pipe between line 66 and 67 [A.A]
+   and 
 #select lam then choose stipe mass but exclude non applicable values then tell me how many entries I have
 
 lam %>% 

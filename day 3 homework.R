@@ -27,3 +27,7 @@ save(laminaria, file = "data/laminaria.RData")
 #can create metric coordinates using ggplot
 #Adds north symbols (18 options) and scale bars in kilometers to maps in geographic or metric coordinates created with 'ggplot' or 'ggmap'.
 
+
+# [A.A]
+# Good discriptions
+# Highlights all important points

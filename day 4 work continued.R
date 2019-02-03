@@ -69,4 +69,6 @@ try_7 <- SACTN %>%
 #Chapter 12 Tidiest data
 
 
-
+# [A.A]
+# Script runs, neat scrip and sufficient comments
+# Definietly an improvement to the first script
