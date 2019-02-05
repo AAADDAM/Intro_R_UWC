@@ -126,4 +126,4 @@ ecko_stipe <- ecko %>% #renaming and assigning new name to ecko, save in environ
 
 summary(ecko)#gives overall summary of the data
 
-#end of section 2
+#end of section 2!

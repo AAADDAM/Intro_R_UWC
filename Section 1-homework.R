@@ -64,7 +64,7 @@ cols11 <- c("cyan", "cyan1", "cyan2", "cyan3", "cyan4",
 sst <- MUR#SUBSURFACE TEMP
 
 feb_map_final <-ggplot(data = feb_data, aes(x = lon, y = lat)) +#ggplot creats a map, aes used (aesthetics)
-  geom_raster(data = sst, aes(fill = bins)) +# The ocean temperatures colour differentiation
+  geom_raster(data = feb_data, aes(fill = bins)) +# The ocean temperatures colour differentiation
   #gives black outline, fills it with grey
   geom_path(data = sa_provinces, aes(group = group)) +
   scale_fill_manual("Temp. (°C)", values = cols11) + # Set the colour palette
@@ -128,7 +128,7 @@ rm(feb_map)#remove feb_map
   sst <- MUR#SUBSURFACE TEMP
   
   aug_map_final <-ggplot(data = aug_data, aes(x = lon, y = lat)) +#ggplot creats a map, aes used (aesthetics)
-    geom_raster(data = sst, aes(fill = bins)) +# The ocean temperatures colour differentiation
+    geom_raster(data = aug_data, aes(fill = bins)) +# The ocean temperatures colour differentiation
     #gives black outline, fills it with white
     geom_path(data = sa_provinces, aes(group = group)) +#creates path to follow or connect
     scale_fill_manual("Temp. (°C)", values = cols12) + # Set the colour palette
@@ -157,4 +157,4 @@ rm(feb_map)#remove feb_map
                       xmin = 20.0, xmax = 24.0,
                       ymin = -32.5, ymax = -30)
   
-#end of section 1  
+#end of section 1!  

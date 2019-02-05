@@ -42,105 +42,118 @@ SACTN_tidy4 <- SACTN_tidy %>%
   summarise(mean_temp = mean(temp, na.rm = TRUE))#summarise, give a name to each first, mean of temp
 
  
-#script notes
+#script notes Tidy data
 #load("data/SACTN_mangled.RData")#loading in an r data file
 
-ggplot(data = SACTN1, aes(x = date, y = temp)) +#ggplot creates a graph/map, data loaded from SACTN, aes is asthetics used for variables being plotted
-  geom_line(aes(colour = site, group = paste0(site, src))) +#plus is used when plotting, paste0 lets you group multiple variables, geom_line creates a geometric line that plots data
-  labs(x = "", y = "Temperature (°C)", colour = "Site") +#labs allows you to rename axis
-  theme_bw()#theme gives your graph a theme
+load("data/SACTN_mangled.RData")#load r data
 
-SACTN2_TIDY <- SACTN2 %>%#pipe funtion used when coding
+ggplot(data = SACTN1, aes(x = date, y = temp)) +#ggplot used to plot, data coded in, aes used to plot x and y values
+  geom_line(aes(colour = site, group = paste0(site, src))) +#geom line creates a line, paste0 groups multiple variables
+  labs(x = "", y = "Temperature (°C)", colour = "Site") +#labs renames x and y axis
+  theme_bw()#creates theme
+
+SACTN2_tidy <- SACTN2 %>%
   gather(DEA, KZNSB, SAWS, key = "src", value = "temp")#gather function used to combine many columns into a single variable column
 
 SACTN3_tidy <- SACTN3 %>% 
-  spread(key = var, value = val)#spread function lets you fix the problem of data being spread across too many rows
+  spread(key = var, value = val)#data be too long, meaning when observations are spread across multiple rows, we will need to use spread() to fix it.
 
 SACTN4a_tidy <- SACTN4a %>% 
-  separate(col = index, into = c("site", "src"), sep = "/ ")#seperate lets you separate data in one coulmn into 2
+  separate(col = index, into = c("site", "src"), sep = "/ ")#separates data from one column
 
 SACTN4b_tidy <- SACTN4b %>% 
-  unite(year, month, day, col = "date", sep = "-")#unite lets you bring various data entries into one column
+  unite(year, month, day, col = "date", sep = "-")#unites data in many columns into 1
 
 SACTN4_tidy <- left_join(SACTN4a_tidy, SACTN4b_tidy)
-#R> Joining by = c("site", "src", "date")#left join function detects similar words, R will group by site, source and date
 
-#Arrange observations (rows) with arrange()
-#Filter observations (rows) with filter()
-#Select variables (columns) withselect()
-#Create new variables (columns) with mutate()
-#Summarise variables (columns) with summarise()
+SACTN4_tidy <- left_join(SACTN4a_tidy, SACTN4b_tidy, by = c("site", "src", "date"))#joins data frames
 
-library(tidyverse)#load these packages
+#five primary data transformation functions
+#Arrange observations with arrange()
+#Filter observations with filter()
+#Select variables with select()
+#Create new variables with mutate()
+#Summarise variables with summarise()
+
+# Load libraries
+library(tidyverse)
 library(lubridate)
 
-#Chapter 11:Tidier R
+# Load the data from a .RData file
+load("data/SACTNmonthly_v4.0.RData")
 
-load("data/SACTNmonthly_v4.0.RData")#LOAD DATA FROM RDATA FILE
-
+# Copy the data as a dataframe with a shorter name
 SACTN <- SACTNmonthly_v4.0
 
 # Remove the original
-rm(SACTNmonthly_v4.0)#rm means remove
+rm(SACTNmonthly_v4.0)
+
+#Comparison operators
+
+#Greater than: >
+ # Greater than or equal to: >=
+  #Less than: <
+  #Less than or equal to: <=
+  #Equal to: ==
+  #Not equal to: !=
+
+#Logical operators
+
+#and: &
+#or: |
+#not: !
+
+SACTN %>% 
+  filter(site == "Pollock Beach", month(date) == 12 | month(date) == 1)#extract place,december or january
+
+SACTN %>% 
+  arrange(depth, temp)#arrange rows with arrange
+
+SACTN %>% 
+  arrange(desc(temp))#arrange in descending order
+
+SACTN %>% 
+  filter(site == "Humewood", year(date) == 1990)#filter by site and year
+
+humewood_90s <- SACTN %>% 
+  filter(site == "Humewood", year(date) %in% seq(1990, 1999, 1))#filter humewood by year sequentially from 1990 onwards
+
+SACTN %>% 
+  filter(site == "Port Nolloth", #site to filter
+         src == "DEA", #source
+         temp <= 11 | #Temps at or below 11°C OR
+           is.na(temp)) #Include missing values
 
 
 SACTN %>% 
-  filter(site == "Amanzimtoti")#use SACTN and then filter by site in amanzimtoti
-
-SACTN %>% 
-  filter(site == "Pollock Beach", month(date) == 12 | month(date) == 1)#use SACTN, filter by  site Pollock beach, using month december or the january.
-#use & if you want to use both
-
-SACTN %>% 
-  arrange(depth, temp)#arrage allows values to go from lowest to highest value
-
-SACTN %>% 
-  arrange(desc(temp))#desc-changes data from highest to lowest
-
-SACTN %>% 
-  filter(site == "Humewood", year(date) == 1990)#r filter site humewood, year by 1990
-
-SACTN %>% 
-  filter(site == "Humewood", year(date) == 1992)#r filter site humewood, year by 1992
-
-
-try_1 <- SACTN %>% 
   select(site, src, date, temp)# Select columns individually by name
 
 
-try_2 <- SACTN %>% 
-  select(site:temp)# Select all columns between site and temp like a sequence, :-select from a point to a point
-
-# Select all columns except those stated individually
-try_3 <- SACTN %>% 
-  select(-date, -depth)# Select all columns except those stated individually
-
-try_4 <- SACTN %>% 
-  select(-(date:depth))# select and remove date and depth, : exclude from a point to a point
-
-try_5 <- SACTN %>% 
-  mutate(kelvin = temp + 273.15)# fix bracket problem
-#create a column using mutate, temp saved in kelvin = temp+237.15
-
-try_6 <- SACTN %>% 
-  mutate(kelvin = (temp +273.15/2))
+SACTN %>% 
+  select(site:temp)#Select all columns between site and temp from one varible up until another variable
 
 
-try_7 <- SACTN %>% 
-  summarise(mean_temp = mean(temp, na.rm = TRUE),#summarise, give a name to each first, mean of temp
-            sd_temp = sd(temp, na.rm = TRUE),#standard dev of temp removing na.omits
-            min_temp = min(temp, na.rm = TRUE),#minimum of temp
-            max_temp = max(temp, na.rm = TRUE))#max of temp
-#use na.rm when analysing a dataset
-#can use "T" instead of True
+SACTN %>% 
+  select(-date, -depth)#select all columns except those stated individually, remove
 
-#assignment operators
-#Greater than: >
-#Greater than or equal to: >=
-#Less than: <
-#Less than or equal to: <=
-#Equal to: ==
-#Not equal to: !=
+SACTN %>% 
+  select(-(date:depth))#Select all columns except those within a given sequence
+# '-' goes outside of a new set of brackets
+
+SACTN %>% 
+  select(temp, src, date, site)#change up order
+
+SACTN %>% 
+  select(type, src, everything())#use everything to take all columns not already selected
+
+SACTN %>% 
+  select(temp:type, everything(), -src)#selecting, order, from one variable to another, removing
+
+SACTN %>% 
+  mutate(kelvin = temp + 273.15)#creates new variable columns
+
+SACTN %>% 
+  summarise(mean_temp = mean(temp, na.rm = TRUE))#summarise data, na's removed
 
 #tidiest data
 
@@ -150,80 +163,114 @@ load("data/SACTNmonthly_v4.0.RData")
 # Copy the data as a dataframe with a shorter name
 SACTN <- SACTNmonthly_v4.0
 
-rm(SACTNmonthly_v4.0)#remove so environment is cleaner
+# Remove the original
+rm(SACTNmonthly_v4.0)
 
 
-SACTN_depth_mean <- SACTN_depth %>% 
-  group_by(depth) %>% # Group by depth
-  summarise(mean_temp = mean(temp, na.rm = TRUE),# Calculate mean temp by depth
-            count = n())
+SACTN_depth <- SACTN %>% 
+  group_by(depth)#Group by depth
 
 SACTN_depth_mean
 
+SACTN_depth_mean <- SACTN_depth %>% 
+  summarise(mean_temp = mean(temp, na.rm = TRUE),
+            count = n())#summarise mean temp by depth
 
 ggplot(data = SACTN_depth_mean, mapping = aes(x = depth, y = mean_temp)) +
-  geom_point(aes(size = count), alpha = 1/3) +
-  geom_smooth(se = FALSE) +
-  ggtitle("Mean temperature in relation to the depth of the reading") +#adding a title
-  labs(x = "depth of reading (m)", y = "mean temperature (°C)")#adding labels to x and y  axis
+  geom_point(aes(size = count), alpha = 1/3) +#alpha gives width
+  geom_smooth(se = FALSE)#geom smooth gives best fit line
 
-SACTN_30_years <- SACTN %>%#renamed
-  group_by(site, src) %>%#grouped by sites and sources
-  filter(n() > 360)#filtered where n is greater 360 months = 30years
+SACTN_temp_group <- SACTN %>% 
+  group_by(round(temp), depth)
 
-selected_sites <- c("Paternoster", "Oudekraal", "Muizenberg", "Humewood")#concatenate, creates a set of number
+SACTN_src_group <- SACTN %>% 
+  group_by(src, date)#create groupings based on source and date
+
+
+SACTN_date_group <- SACTN %>% 
+  group_by(date, depth)#create groupings based on date and depth
+
+SACTN_ungroup <- SACTN_date_group %>% 
+  ungroup()#ungroups data
+
+SACTN_depth_mean_2 <- SACTN %>% #choose a base dataframe
+  group_by(depth) %>% #group by the depth column
+  summarise(mean_temp = mean(temp, na.rm = TRUE), #calculate means
+            count = n()) #count observations 
+
+SACTN_30_years <- SACTN %>%
+  group_by(site, src) %>%
+  filter(n() > 360)#filter by bigger than 360 months
+
+SACTN_anom <- SACTN %>%
+  group_by(site, src) %>% #groups variables
+  mutate(anom = temp - mean(temp, na.rm = T)) %>% #adds column
+  select(site:date, anom, depth, type) %>% #selects data
+  ungroup()#ungroups data
 
 SACTN %>% 
-  filter(site %in% selected_sites) %>%#concatenate function used in selected sites, extract  the info from those sites
-  group_by(site, src) %>% #grouped by site and source
-  summarise(mean_temp = mean(temp, na.rm = TRUE), #summarise to get mean and stdv of temp
+  filter(site == "Paternoster" | site == "Oudekraal") %>%#filter by site
+  group_by(site, src) %>% 
+  summarise(mean_temp = mean(temp, na.rm = TRUE), 
             sd_temp = sd(temp, na.rm = TRUE))
 
 SACTN %>% 
-  filter(site == "Port Nolloth", temp > 10, temp < 15)#extract data, temp bigger than 10 but smaller than 15
+  filter(site == "Paternoster" | "Oudekraal") %>% # This line has been changed/shortened using "divison"
+  group_by(site, src) %>% 
+  summarise(mean_temp = mean(temp, na.rm = TRUE), 
+            sd_temp = sd(temp, na.rm = TRUE))
 
 SACTN %>% 
-  filter(site == "Port Nolloth", !(temp <= 10 | temp  >= 15))#== means equal, temp less or equal to 10 or temp bigger and equal to 15
+  filter(site == "Port Nolloth", temp > 10, temp < 15)#shows temp bigger than 10 but less than 15
 
-
-SACTN %>% #Choose dataframe
+SACTN %>% # Choose starting dataframe
   filter(site %in% c("Bordjies", "Tsitsikamma", "Humewood", "Durban")) %>% #select sites
-  select(-depth, -type) %>% #Remove depth and type columns
-  mutate(month = month(date), #add month column called month
-         index = paste(site, src, sep = "/ ")) %>% #make individual site column using "/" to separate data
-  group_by(index, month) %>% #group by sites and months
-  summarise(mean_temp = mean(temp, na.rm = TRUE), #calculate mean temp, na removed
+  select(-depth, -type) %>% #remove depth and type columns
+  mutate(month = month(date), #create month column
+         index = paste(site, src, sep = "/ ")) %>% #create individual site column
+  group_by(index, month) %>% #group by individual sites and months
+  summarise(mean_temp = mean(temp, na.rm = TRUE), #calculate mean temp
             sd_temp = sd(temp, na.rm = TRUE)) %>% #calculate stdv
-  ggplot(aes(x = month, y = mean_temp)) + #ggplot, change from '%>%' to '+'- pipe to plus
-  geom_ribbon(aes(ymin = mean_temp - sd_temp, ymax = mean_temp + sd_temp),#create a ribbon 
-              fill = "black", alpha = 0.4) + 
-  geom_line(col = "red", size = 0.3) + #create lines within ribbon
+  ggplot(aes(x = month, y = mean_temp)) + #ggplot, switch from '%>%' to '+'
+  geom_ribbon(aes(ymin = mean_temp - sd_temp, ymax = mean_temp + sd_temp), 
+              fill = "black", alpha = 0.4) + #make a ribbon
+  geom_line(col = "red", size = 0.3) + # =make lines within ribbon
   facet_wrap(~index) + #facet by individual sites
   scale_x_continuous(breaks = seq(2, 12, 4)) + #control x axis ticks
-  labs(x = "Month", y = "Temperature (°C)") + #change labels
-  theme_dark() #set theme dark
+  labs(x = "Month", y = "Temperature (°C)") + #Change labels
+  theme_dark() # Set theme
 
 SACTN %>% 
-  transmute(kelvin = temp + 273.15)#transmute, used to change dataframe
+  rename(source = src)#rename variable column
+
+SACTN %>% 
+  transmute(kelvin = temp + 273.15)#transmute adds new column but with different dataframe
 
 SACTN_n <- SACTN %>% 
-  group_by(site, src) %>% #groups data by site and source
-  summarise(mean_temp = round(mean(temp, na.rm = T))) %>% #summarises, gets mean temp,
-  arrange(mean_temp) %>%#arranges data
-  ungroup() %>% #ungroups data in columns
-  select(mean_temp) %>% #selects data
-  unique()#returns a dataframe with duplicates removed
+  group_by(site, src) %>% 
+  summarise(mean_temp = round(mean(temp, na.rm = T))) %>% 
+  arrange(mean_temp) %>% 
+  ungroup() %>% 
+  select(mean_temp) %>% 
+  unique()#unique chooses one of a kind variables
+
+
+SACTN %>% 
+  slice(10010:10020)#slices a seqeunce of rows
 
 
 SACTN %>%
-  slice(c(1,8,19,24,3,400))# Slice specific rows, c is concatenate- creates a string of data
+  slice(c(1,8,19,24,3,400))#slices specific rows
 
-# The top 5 variable sites as measured by SD
+
 SACTN %>% 
-  group_by(site, src) %>% 
-  summarise(sd_temp = sd(temp, na.rm = T)) %>% 
-  ungroup() %>% 
-  arrange(desc(sd_temp)) %>% #arranges in descending order
-  slice(1:5)#slices from values 1 to 5
+  slice(-(c(1,8,4)))#slices all rows except these
+
+
+SACTN %>% 
+  slice(-(1:1000))#slices all rows except a sequence
+
+
+
 
 #end of section 3
