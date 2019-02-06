@@ -29,6 +29,8 @@ head(feb_data) #r auto does 6 rows
 head(feb_data, n = 5)#head lets you see top 5 rows, n is number of rows
 tail(feb_data, n = 5)#tails lets you see bottom 5 rows
 
+load("data/rast_feb.RData")
+
 feb_data_select <- feb_data %>% #pipe function, created by shift, control and M
   select(-lon, -lat) #select function uses data selected, while select- removes data from dataset 
  
@@ -47,6 +49,7 @@ feb_data %>% # Select 'feb data'
 
 library(scales)
 library(ggsn)
+library(ggpubr)
 
 
 
@@ -59,7 +62,7 @@ load("data/MUR_low_res.RData")
 cols11 <- c("cyan", "cyan1", "cyan2", "cyan3", "cyan4",
             "darkblue", "darkcyan", "blue2", "blue3", "blue4")#concatenate colours for palette
 
-
+load("data/africa_map.RData")
 
 sst <- MUR#SUBSURFACE TEMP
 
@@ -96,6 +99,8 @@ inset_map <- feb_map_final +#inset map placed within southern africa map
 rm(feb_map)#remove feb_map
 
 
+load("data/rast_aug.RData")
+load("data/africa_map.RData")
   aug_data <- rast_aug#aug_data is used along with ' <- ' to assign a name to rast_feb to save it in the environment
   rm(rast_aug)#rm used to remove rast_aug dataset
   
