@@ -191,3 +191,8 @@ ggplot(melted_eck, aes(x=Var1, y=Var2, fill=value)) +
 #hope it works now
 
 
+# Script runs
+# Neat but do need more comments describing what each code does. Remember this shows the marker what you are doing and that you understand what you are doing
+# Good hypothesis
+# Reember to explore R and try different things or different graphs
+

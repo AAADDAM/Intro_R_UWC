@@ -109,3 +109,11 @@ ggplot(data = ecklonia, aes(x = stipe_length, y = frond_length)) +
   theme_pubclean()
 
 corrplot(ecklonia_pearson, method = "circle")
+
+# Script runs
+# Neat script
+# But the same applies here as in script one.
+# Add comments
+# Describe what you are doing
+# State the hypothesis and why you are doing what you are doing with a specific code
+

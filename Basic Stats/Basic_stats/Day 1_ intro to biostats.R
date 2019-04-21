@@ -202,3 +202,9 @@ plt2 <- ggplot(data = iris, aes(x = Petal.Length, y = Petal.Width, colour = Spec
   labs(x = "Petal length (mm)", y = "Petal width (mm)") + 
   theme_pubclean()
 
+
+# Script is neat
+# Add more comments to describe what you are doing
+# Good to have infomation at the top of the script. this is to describe what you hope to achieve in the code below
+# It is good to not simply just copy the code but to try different things
+
